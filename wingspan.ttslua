@@ -5,6 +5,7 @@ Completed
     Reset birdfeeder button
     Refill river button
     Food gain/pay buttons
+    Birdfeeder gain buttons
 Tasks
     Reset action counters button
     Egg counters
@@ -64,17 +65,36 @@ function onLoad()
     birdfeeder.createButton({
         click_function = "resetBirdfeeder",
         label          = "Reset\nBirdfeeder",
-        position       = {0,-10,-15},
+        position       = {-6.2,-10,-15},
         rotation       = {0,180,0},
         scale          = {0.4,0.4,0.4},
         width          = 3000,
         height         = 2000,
         font_size      = 600
     })
-    -- create resource buttons
-    for i,matGUID in pairs(RESOURCEMATS_GUID) do
+    -- create birdfeeder resource buttons
+    for j,_ in ipairs(RESOURCEBAGS_GUID) do
+        local buttonTable = {}
+        buttonTable.label = "+\n"..RESOURCES[j]
+        buttonTable.position = {-5.2+(2*j),-10,-15}
+        buttonTable.rotation = {0,180,0}
+        buttonTable.scale = {0.4,0.4,0.4}
+        buttonTable.width = 2200
+        buttonTable.height = 2000
+        buttonTable.font_size = 600
+        buttonTable.color = RESOURCE_COLORS[j]
+        buttonTable.font_color = "Black"
+        buttonTable.click_function = "click_function"..tostring(j)
+        self.setVar(
+            buttonTable.click_function,
+            function(o,c,a) resourceAdd(c,j) end
+        )
+        birdfeeder.createButton(buttonTable)
+    end 
+    -- create resource mat buttons
+    for i,matGUID in ipairs(RESOURCEMATS_GUID) do
         local mat = getObjectFromGUID(matGUID)
-        for j, bagGUID in pairs(RESOURCEBAGS_GUID) do
+        for j,_ in ipairs(RESOURCEBAGS_GUID) do
             local buttonTable = {}
             buttonTable.label          = "+/-\n"..RESOURCES[j]
             buttonTable.position       = {0.52,0.15,-1.13+(0.32*j)}
@@ -140,7 +160,25 @@ function resourceChange(matObj,color,altClick,i,j)
     end
 end
 
-function resourceAdd()
+function resourceAdd(color,j)
+    local bag = getObjectFromGUID(RESOURCEBAGS_GUID[j])
+    local matObj = getObjectFromGUID(RESOURCEMATS_GUID[find(color,COLORS)])
+    local matPos = matObj.getPosition()
+    local matRot = matObj.getRotation()
+    local takeTab = {}
+    takeTab.rotation = matRot
+    takeTab.smooth = true
+    local tol = 1
+    if matRot.y<0+tol or matRot.y>360-tol then
+        takeTab.position = {matPos.x-0.2,3,matPos.z-3.14+(0.9*j)}
+    elseif matRot.y>90-tol and matRot.y<90+tol then
+        takeTab.position = {matPos.x-3.14+(0.9*j),3,matPos.z+0.3}
+    elseif matRot.y>180-tol and matRot.y<180+tol then
+        takeTab.position = {matPos.x+0.2,3,matPos.z+3.14+(-0.9*j)}
+    else
+        takeTab.position = {matPos.x+3.14-(0.9*j),3,matPos.z-0.3}
+    end
+    bag.takeObject(takeTab)
 end
 
 function setup()
@@ -392,7 +430,6 @@ end
 function onObjectLeaveContainer(container,object)
     if isin(container.getGUID(),RESOURCEBAGS_GUID) then
         local tag = RESOURCES[find(container.getGUID(),RESOURCEBAGS_GUID)]
-        log(tag)
         object.addTag(tag)
     end
 end
