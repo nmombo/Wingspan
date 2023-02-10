@@ -48,6 +48,14 @@ COLORS_BUTTONFONT = {
     "White",
     "White"
 }
+COLORS_HEX = {
+    "#877768",
+    "#437461",
+    "#d88742",
+    "#418ba4",
+    "#b2434a",
+    "#ef539e"
+}
 RESOURCES = {
     "Rodents",
     "Insects",

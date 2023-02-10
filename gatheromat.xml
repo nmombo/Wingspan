@@ -1,0 +1,56 @@
+<!-- Gather-O-Mat -->
+<Panel
+    id="gatherOmat"
+    height="255"
+    width="240"
+    color="#3C3A39"
+    rectAlignment="Lowerright"
+    allowDragging="false"
+    active="false"
+    >
+
+    <Button
+        id="GOMButton"
+        onClick="gatherOmatOff"
+        height="15"
+        width="240"
+        color="#128712"
+        textColor="#000000"
+        rectAlignment="Upperright"
+    ></Button>
+
+    <text
+        id="GOMHead"
+        color="#FFFFFF"
+        offsetXY="0 121"
+        >Gather-O-Mat
+    </text>
+</Panel>
+
+<!-- Mini GOM -->
+<Panel
+    id="minigatherOmat"
+    height="15"
+    width="160"
+    color="#3C3A39"
+    rectAlignment="Lowerright"
+    allowDragging="true"
+    returnToOriginalPositionWhenReleased="false"
+    active="false"
+    >
+
+    <Button
+        onClick="gatherOmatOn"
+        height="15"
+        width="160"
+        color="#128712"
+        textColor="#000000"
+        rectAlignment="UpperRight"
+        >
+    </Button>
+    
+    <text
+        color="#FFFFFF"
+        >Gather-O-Mat
+    </text>
+</Panel>

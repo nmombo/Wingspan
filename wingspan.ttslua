@@ -6,15 +6,17 @@ Completed
     Refill river button
     Food gain/pay buttons
     Birdfeeder gain buttons
+    Food counters
 Tasks
     Reset action counters button
     Egg counters
-    Food counters
+    Replace buttons with Gather-O-Mat
 ]]
 
 require("guids")
 require("constants")
 require("../utils")
+
 
 isEuropeAdded = false
 isOceaniaAdded = false
@@ -113,6 +115,88 @@ function onLoad()
             mat.createButton(buttonTable)        
         end
     end
+    -- create resource mat counters
+    for i,matGUID in ipairs(RESOURCEMATS_GUID) do
+        local mat = getObjectFromGUID(matGUID)
+        mat.UI.setXmlTable({{
+            tag="VerticalLayout",
+            attributes={
+                height=196,
+                width=190,
+                position="30 0 -11",
+                rotation="0 0 180",
+                scale="1 1 1"
+            },
+            children={
+                {
+                    tag="Text",
+                    attributes={
+                        text="0",
+                        id="1"
+                    },
+                },
+                {
+                    tag="Text",
+                    attributes={
+                        text="0",
+                        id="2"
+                    },
+                },
+                {
+                    tag="Text",
+                    attributes={
+                        text="0",
+                        id="3"
+                    },
+                },
+                {
+                    tag="Text",
+                    attributes={
+                        text="0",
+                        id="4"
+                    },
+                },
+                {
+                    tag="Text",
+                    attributes={
+                        text="0",
+                        id="5"
+                    },
+                },
+                {
+                    tag="Text",
+                    attributes={
+                        text="0",
+                        id="6"
+                    },
+                },
+            }
+        }})
+        Wait.condition(
+            function()
+                for j=1,6 do
+                    mat.UI.setAttribute(tostring(j),"color",COLORS_HEX[j])
+                    mat.UI.setAttribute(tostring(j),"fontSize","17")
+                    mat.UI.setAttribute(tostring(j),"fontStyle","Bold")
+                end
+            end,
+            function()
+                return not mat.UI.loading
+            end
+        )
+    end
+    -- activate gatherOmat
+    Global.UI.setAttribute("gatherOmat","active",true)
+end
+
+function gatherOmatOff()
+    Global.UI.setAttribute("gatherOmat","active",false)
+    Global.UI.setAttribute("minigatherOmat","active",true)
+end
+
+function gatherOmatOn()
+    Global.UI.setAttribute("gatherOmat","active",true)
+    Global.UI.setAttribute("minigatherOmat","active",false)
 end
 
 function resourceChange(matObj,color,altClick,i,j)
@@ -431,5 +515,49 @@ function onObjectLeaveContainer(container,object)
     if isin(container.getGUID(),RESOURCEBAGS_GUID) then
         local tag = RESOURCES[find(container.getGUID(),RESOURCEBAGS_GUID)]
         object.addTag(tag)
+    end
+end
+
+function onObjectEnterScriptingZone(zone,_)
+    if isin(zone.getGUID(),RESOURCEZONES_GUID) then
+        local count = {0,0,0,0,0,0}
+        for _,obj in ipairs(zone.getObjects()) do
+            for j,resource in ipairs(RESOURCES) do
+                if isin(resource,obj.getTags()) then
+                    if obj.getData().Number==nil then
+                        count[j] = count[j]+1
+                    else
+                        count[j] = count[j]+obj.getData().Number
+                    end
+                end
+            end
+        end
+        local i = find(zone.getGUID(),RESOURCEZONES_GUID)
+        local mat = getObjectFromGUID(RESOURCEMATS_GUID[i])
+        for i=1,6 do
+            mat.UI.setAttribute(tostring(i),"text",count[i])
+        end
+    end
+end
+
+function onObjectLeaveScriptingZone(zone,_)
+    if isin(zone.getGUID(),RESOURCEZONES_GUID) then
+        local count = {0,0,0,0,0,0}
+        for _,obj in ipairs(zone.getObjects()) do
+            for j,resource in ipairs(RESOURCES) do
+                if isin(resource,obj.getTags()) then
+                    if obj.getData().Number==nil then
+                        count[j] = count[j]+1
+                    else
+                        count[j] = count[j]+obj.getData().Number
+                    end
+                end
+            end
+        end
+        local i = find(zone.getGUID(),RESOURCEZONES_GUID)
+        local mat = getObjectFromGUID(RESOURCEMATS_GUID[i])
+        for i=1,6 do
+            mat.UI.setAttribute(tostring(i),"text",count[i])
+        end
     end
 end
