@@ -10,7 +10,8 @@ Completed
 Tasks
     Reset action counters button
     Egg counters
-    Replace buttons with Gather-O-Mat
+    Replace birdfeeder buttons with Gather-O-Mat
+    Scoring
 ]]
 
 require("guids")
@@ -394,7 +395,8 @@ function oceaniaEnable()
     -- replace dice
     for i,dieGUID in ipairs(DICE_GUID) do
         local die = getObjectFromGUID(dieGUID)
-        die.destruct()
+        local setPos = getObjectFromGUID(INSTRUCTIONSBAG_GUID).getPosition()
+        die.setPositionSmooth({setPos.x,2+i,setPos.z},false,true)
         bag.takeObject({
             position = DICE_LOC[i],
             smooth = true,
@@ -418,30 +420,24 @@ function oceaniaEnable()
             return all(allResting)
         end
     )
-    -- replace player mats
+    -- flip player mats
     for i,matGUID in ipairs(PLAYERMATS_GUID) do
         local mat = getObjectFromGUID(matGUID)
-        mat.destruct()
-        bag.takeObject({
-            position = MAT_LOC[i],
-            rotation = MAT_ROT[i],
-            smooth = true,
-            guid = PLAYERMATS_OCEANIA_GUID[i]
-        })
+        mat.setLock(false)
+        mat.flip()
     end
-    PLAYERMATS_GUID = PLAYERMATS_OCEANIA_GUID
     Wait.condition(
         function()
             for _,matGUID in ipairs(PLAYERMATS_GUID) do
                 local mat = getObjectFromGUID(matGUID)
-                mat.setLock(true)
+                mat.setLock(true) 
             end
         end,
         function()
             local allResting = {}
             for i,matGUID in ipairs(PLAYERMATS_GUID) do
                 local mat = getObjectFromGUID(matGUID)
-                allResting[i] = mat.resting
+                allResting[i] = mat.resting and mat.getPosition().y<1.1
             end
             return all(allResting)
         end

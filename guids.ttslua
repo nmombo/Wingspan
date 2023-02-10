@@ -1,5 +1,13 @@
+-- Universal
 TRAY_GUID = "73d70d"
 BIRDFEEDER_GUID = "b0c55d"
+PLAYERMATS_GUID = {
+    "dee41d",
+    "a3b106",
+    "d68d10",
+    "a11f20",
+    "4b82e3"
+}
 RESOURCEMATS_GUID = {
     "88a6f7",
     "f41518",
@@ -29,23 +37,104 @@ TRASH_GUID = {
     "e7e5c1",
     "d5e2c0"
 }
+COUNTERS_WHITE_GUID = {
+    "e5417b",
+    "c1dc02",
+    "4ffc84",
+    "cc1762",
+    "c979e2",
+    "10f507",
+    "31af56",
+    "e1a741"
+}
+COUNTERS_YELLOW_GUID = {
+    "67bf2e",
+    "36ec23",
+    "7e1890",
+    "18cd1a",
+    "bea1e3",
+    "939312",
+    "4441db",
+    "7cbac5"
+}
+COUNTERS_GREEN_GUID = {
+    "c2ae8d",
+    "a842f5",
+    "a9f3b3",
+    "29f32e",
+    "73f617",
+    "b3413a",
+    "3ced8d",
+    "54bfd4"
+}
+COUNTERS_BLUE_GUID = {
+    "54bfd4",
+    "d4f967",
+    "5910ca",
+    "a2fde2",
+    "a81ad7",
+    "11e7dc",
+    "236671",
+    "2d2095"
+}
+COUNTERS_PURPLE_GUID = {
+    "a0383a",
+    "66a72f",
+    "0b5081",
+    "c36891",
+    "a5f154",
+    "c82273",
+    "fd646b",
+    "4546c7"
+}
+COUNTERS_GUID = {
+    COUNTERS_WHITE_GUID,
+    COUNTERS_YELLOW_GUID,
+    COUNTERS_GREEN_GUID,
+    COUNTERS_BLUE_GUID,
+    COUNTERS_PURPLE_GUID
+}
+GOALZONES_1_GUID = {
+    "ec0848",
+    "0b4040",
+    "1991e9",
+    "472f8c"
+}
+GOALZONES_2_GUID = {
+    "d472c1",
+    "00305e",
+    "fe0d33",
+    "cd950d"
+}
+GOALZONES_3_GUID = {
+    "fab1e9",
+    "b95f59",
+    "b95f59",
+    "7c381a"
+}
+GOALZONES_4_GUID = {
+    "b285b2",
+    "9b1496",
+    "2a663a",
+    "2ee834"
+}
+GOALZONES_GUID = {
+    GOALZONES_1_GUID,
+    GOALZONES_2_GUID,
+    GOALZONES_3_GUID,
+    GOALZONES_4_GUID
+}
 -- Base Game
-BIRDDECK_GUID = "6bc66a"
-BONUSDECK_GUID = "588f1a"
+INSTRUCTIONSBAG_GUID = "64aee4"
+BIRDDECK_GUID = "6f8117"
+BONUSDECK_GUID = "8939ea"
 ROUNDGOALS_GUID = "a7990b"
 DICE_GUID = {
-    "0cb0b7",
-    "a727b2",
-    "49a478",
-    "bd09eb",
+    "a26aa0",
+    "845130",
+    "9595ad",
+    "83a366",
     "bf73ca"
-}
-PLAYERMATS_GUID = {
-    "b16643",
-    "11c94a",
-    "d3ad97",
-    "86c4fb",
-    "a4346b"
 }
 -- European Expansion
 EUROPEANBAG_GUID = "315a33"
@@ -63,13 +152,6 @@ DICE_OCEANIA_GUID = {
     "e6d7ac",
     "cd5363",
     "6056be"
-}
-PLAYERMATS_OCEANIA_GUID = {
-    "dee41d",
-    "a3b106",
-    "d68d10",
-    "a11f20",
-    "4b82e3"
 }
 RIVERZONES_GUID = {
     "b3e430",
