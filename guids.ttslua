@@ -1,0 +1,78 @@
+TRAY_GUID = "73d70d"
+BIRDFEEDER_GUID = "b0c55d"
+RESOURCEMATS_GUID = {
+    "88a6f7",
+    "f41518",
+    "9f29d0",
+    "5492cc",
+    "ef602e"
+}
+RESOURCEBAGS_GUID = {
+    "d52985",
+    "41fda6",
+    "b9fadf",
+    "78f55b",
+    "66429a",
+    "02c4c6"
+}
+RESOURCEZONES_GUID = {
+    "89bbe4",
+    "acd52b",
+    "e065e5",
+    "74c0a6",
+    "9df79c"
+}
+TRASH_GUID = {
+    "288283",
+    "f22d48",
+    "20759e",
+    "e7e5c1",
+    "d5e2c0"
+}
+-- Base Game
+BIRDDECK_GUID = "6bc66a"
+BONUSDECK_GUID = "588f1a"
+ROUNDGOALS_GUID = "a7990b"
+DICE_GUID = {
+    "0cb0b7",
+    "a727b2",
+    "49a478",
+    "bd09eb",
+    "bf73ca"
+}
+PLAYERMATS_GUID = {
+    "b16643",
+    "11c94a",
+    "d3ad97",
+    "86c4fb",
+    "a4346b"
+}
+-- European Expansion
+EUROPEANBAG_GUID = "315a33"
+BIRDDECK_EUROPE_GUID = "f8f276"
+BONUSDECK_EUROPE_GUID = "eab287"
+ROUNDGOALS_EUROPE_GUID = "0afd57"
+-- Oceania Expansion
+OCEANIANBAG_GUID = "1e2c52"
+BIRDDECK_OCEANIA_GUID = "fb1538"
+BONUSDECK_OCEANIA_GUID = "50817a"
+ROUNDGOALS_OCEANIA_GUID = "e75d74"
+DICE_OCEANIA_GUID = {
+    "6e072e",
+    "b78afe",
+    "e6d7ac",
+    "cd5363",
+    "6056be"
+}
+PLAYERMATS_OCEANIA_GUID = {
+    "dee41d",
+    "a3b106",
+    "d68d10",
+    "a11f20",
+    "4b82e3"
+}
+RIVERZONES_GUID = {
+    "b3e430",
+    "89b212",
+    "4c4ee4"
+}

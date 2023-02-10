@@ -1,0 +1,398 @@
+--[[
+Completed
+    Expansion setup buttons
+    Setup button
+    Reset birdfeeder button
+    Refill river button
+    Food gain/pay buttons
+Tasks
+    Reset action counters button
+    Egg counters
+    Food counters
+]]
+
+require("guids")
+require("constants")
+require("../utils")
+
+isEuropeAdded = false
+isOceaniaAdded = false
+hasRiverWaited = {
+    ["b3e430"]=true,
+    ["89b212"]=true,
+    ["4c4ee4"]=true
+}
+
+function onLoad()
+    -- create setup button
+    local tray = getObjectFromGUID(TRAY_GUID)
+    tray.createButton({
+        click_function = "setup",
+        label          = "Setup",
+        position       = {0,0.15,3},
+        rotation       = {0,0,0},
+        scale          = {0.3,0.3,0.3},
+        width          = 3000,
+        height         = 1000,
+        font_size      = 1000
+    })
+    -- create expansion buttons
+    local europeanBag=getObjectFromGUID(EUROPEANBAG_GUID)
+    europeanBag.createButton({
+        click_function = "europeEnable",
+        label          = "Enable\nEuropean\nExpansion",
+        position       = {-3,0.15,0},
+        rotation       = {0,0,0},
+        scale          = {0.4,0.4,0.4},
+        width          = 3000,
+        height         = 3000,
+        font_size      = 600
+    })
+    local oceanianBag=getObjectFromGUID(OCEANIANBAG_GUID)
+    oceanianBag.createButton({
+        click_function = "oceaniaEnable",
+        label          = "Enable\nOceania\nExpansion",
+        position       = {-3,0.15,0},
+        rotation       = {0,0,0},
+        scale          = {0.4,0.4,0.4},
+        width          = 3000,
+        height         = 3000,
+        font_size      = 600
+    })
+    -- create reset birdfeeder button
+    local birdfeeder=getObjectFromGUID(BIRDFEEDER_GUID)
+    birdfeeder.createButton({
+        click_function = "resetBirdfeeder",
+        label          = "Reset\nBirdfeeder",
+        position       = {0,-10,-15},
+        rotation       = {0,180,0},
+        scale          = {0.4,0.4,0.4},
+        width          = 3000,
+        height         = 2000,
+        font_size      = 600
+    })
+    -- create resource buttons
+    for i,matGUID in pairs(RESOURCEMATS_GUID) do
+        local mat = getObjectFromGUID(matGUID)
+        for j, bagGUID in pairs(RESOURCEBAGS_GUID) do
+            local buttonTable = {}
+            buttonTable.label          = "+/-\n"..RESOURCES[j]
+            buttonTable.position       = {0.52,0.15,-1.13+(0.32*j)}
+            buttonTable.rotation       = {0,0,0}
+            buttonTable.scale          = {0.1,0.1,0.1}
+            buttonTable.width          = 2200
+            buttonTable.height         = 1200
+            buttonTable.font_size      = 600
+            buttonTable.color          = Color.fromString(COLORS[i])
+            buttonTable.font_color     = Color.fromString(COLORS_BUTTONFONT[i])
+            buttonTable.click_function = "click_function"..tostring(i)..tostring(j)
+            self.setVar(
+                buttonTable.click_function,
+                function(o,c,a) resourceChange(o,c,a,i,j) end
+            )
+            mat.createButton(buttonTable)        
+        end
+    end
+end
+
+function resourceChange(matObj,color,altClick,i,j)
+    if(color~=COLORS[i]) then
+        log(color.." modified "..COLORS[i].."'s resources")
+        broadcastToColor("Caution: you're modifying another player's resources",color)
+    end
+    if altClick then -- subtract
+        local zone = getObjectFromGUID(RESOURCEZONES_GUID[i])
+        for _,obj in ipairs(zone.getObjects()) do
+            if isin(RESOURCES[j],obj.getTags()) then
+                local trash = getObjectFromGUID(TRASH_GUID[i])
+                local setPos = trash.getPosition()
+                if obj.getData().Number==nil then
+                    obj.setPositionSmooth({setPos.x,5,setPos.z},false,true)
+                else
+                    obj.takeObject({
+                        position = {setPos.x,5,setPos.z},
+                        smooth   = true
+                    })
+                end
+                return
+            end
+        end
+        log("Not enough "..RESOURCES[j].." for "..color.." to subtract 1")
+        broadcastToColor("Not enough "..RESOURCES[j].." to subtract 1",color)
+    else --add
+        local bag = getObjectFromGUID(RESOURCEBAGS_GUID[j])
+        local matPos = matObj.getPosition()
+        local matRot = matObj.getRotation()
+        local takeTab = {}
+        takeTab.rotation = matRot
+        takeTab.smooth = true
+        local tol = 1
+        if matRot.y<0+tol or matRot.y>360-tol then
+            takeTab.position = {matPos.x-0.2,3,matPos.z-3.14+(0.9*j)}
+        elseif matRot.y>90-tol and matRot.y<90+tol then
+            takeTab.position = {matPos.x-3.14+(0.9*j),3,matPos.z+0.3}
+        elseif matRot.y>180-tol and matRot.y<180+tol then
+            takeTab.position = {matPos.x+0.2,3,matPos.z+3.14+(-0.9*j)}
+        else
+            takeTab.position = {matPos.x+3.14-(0.9*j),3,matPos.z-0.3}
+        end
+        bag.takeObject(takeTab)
+    end
+end
+
+function resourceAdd()
+end
+
+function setup()
+    log("Setup button clicked")
+    -- remove setup button
+    local tray = getObjectFromGUID(TRAY_GUID)
+    tray.removeButton(0)
+    -- shuffle and deal decks
+    local birdDeck = getObjectFromGUID(BIRDDECK_GUID)
+    local bonusDeck = getObjectFromGUID(BONUSDECK_GUID)
+    birdDeck.shuffle()
+    bonusDeck.shuffle()
+    birdDeck.deal(5)
+    bonusDeck.deal(2)
+    log("Bird and bonus cards dealt")
+    -- select round objectives
+    local roundGoals = getObjectFromGUID(ROUNDGOALS_GUID)
+    roundGoals.shuffle()
+    for i=1,4 do
+        roundGoals.takeObject({
+            position = ROUNDGOALS_LOC[i],
+            rotation = ROUNDGOALS_ROT,
+            smooth   = true,
+            flip     = math.random(0,1)==1
+        })
+    end
+    log("Round goals selected")
+    -- fill river
+    local tray = getObjectFromGUID(TRAY_GUID)
+    tray.createButton({
+        click_function = "refillRiver",
+        label          = "Refill",
+        position       = {-1.9,0.15,1.5},
+        rotation       = {0,0,0},
+        scale          = {0.2,0.2,0.2},
+        width          = 3000,
+        height         = 1000,
+        font_size      = 1000
+    })
+    refillRiver()
+    -- reset birdfeeder
+    resetBirdfeeder()
+end
+
+function europeEnable()
+    -- remove button
+    local bag = getObjectFromGUID(EUROPEANBAG_GUID)
+    bag.removeButton(0)
+    -- add bird deck, bonus deck, and round end tokens
+    local baseGUIDs = {BIRDDECK_GUID,BONUSDECK_GUID,ROUNDGOALS_GUID}
+    local addGUIDs = {BIRDDECK_EUROPE_GUID,BONUSDECK_EUROPE_GUID,ROUNDGOALS_EUROPE_GUID}
+    local add
+    local baseCounts = {}
+    for i,baseGUID in ipairs(baseGUIDs) do
+        local baseObj = getObjectFromGUID(baseGUID)
+        local basePos = baseObj.getPosition()
+        local baseData = baseObj.getData()
+        baseCounts[i] = #baseData["DeckIDs"]
+        bag.takeObject({
+            position = Vector(basePos.x,5,basePos.z),
+            rotation = Vector(0,180,180),
+            smooth   = true,
+            guid     = addGUIDs[i]
+        })
+    end
+    -- shuffle decks
+    Wait.condition(
+        function() -- execute
+            for _,baseGUID in ipairs(baseGUIDs) do
+                local baseObj = getObjectFromGUID(baseGUID)
+                baseObj.shuffle()
+            end
+        end,
+        function() -- condition
+            local conditions = {false,false,false}
+            for i,baseGUID in ipairs(baseGUIDs) do
+                local baseObj = getObjectFromGUID(baseGUID)
+                local baseData = baseObj.getData()
+                if #baseData["DeckIDs"]>baseCounts[i] then conditions[i]=true end
+            end
+            return conditions[1] and conditions[2] and conditions[3]
+        end
+    )
+    -- change global definition
+    isEuropeAdded = true
+    log("European expansion setup complete")
+end
+
+function oceaniaEnable()
+    -- remove button
+    local bag = getObjectFromGUID(OCEANIANBAG_GUID)
+    bag.removeButton(0)
+    -- add bird deck, bonus deck, and round end tokens
+    local baseGUIDs = {BIRDDECK_GUID,BONUSDECK_GUID,ROUNDGOALS_GUID}
+    local addGUIDs = {BIRDDECK_OCEANIA_GUID,BONUSDECK_OCEANIA_GUID,ROUNDGOALS_OCEANIA_GUID}
+    local add
+    local baseCounts = {}
+    for i,baseGUID in ipairs(baseGUIDs) do
+        local baseObj = getObjectFromGUID(baseGUID)
+        local basePos = baseObj.getPosition()
+        local baseData = baseObj.getData()
+        baseCounts[i] = #baseData["DeckIDs"]
+        bag.takeObject({
+            position = Vector(basePos.x,5,basePos.z),
+            rotation = Vector(0,180,180),
+            smooth   = true,
+            guid     = addGUIDs[i]
+        })
+    end
+    -- shuffle decks
+    Wait.condition(
+        function() -- execute
+            for _,baseGUID in ipairs(baseGUIDs) do
+                local baseObj = getObjectFromGUID(baseGUID)
+                baseObj.shuffle()
+            end
+        end,
+        function() -- condition
+            local conditions = {false,false,false}
+            for i,baseGUID in ipairs(baseGUIDs) do
+                local baseObj = getObjectFromGUID(baseGUID)
+                local baseData = baseObj.getData()
+                if #baseData["DeckIDs"]>baseCounts[i] then conditions[i]=true end
+            end
+            return conditions[1] and conditions[2] and conditions[3]
+        end
+    )
+    -- replace dice
+    for i,dieGUID in ipairs(DICE_GUID) do
+        local die = getObjectFromGUID(dieGUID)
+        die.destruct()
+        bag.takeObject({
+            position = DICE_LOC[i],
+            smooth = true,
+            guid = DICE_OCEANIA_GUID[i]
+        })
+    end
+    DICE_GUID = DICE_OCEANIA_GUID
+    Wait.condition(
+        function()
+            for _,dieGUID in ipairs(DICE_GUID) do
+                local die = getObjectFromGUID(dieGUID)
+                die.shuffle()
+            end
+        end,
+        function()
+            local allResting = {}
+            for i,dieGUID in ipairs(DICE_GUID) do
+                local die = getObjectFromGUID(dieGUID)
+                allResting[i] = die.resting
+            end
+            return all(allResting)
+        end
+    )
+    -- replace player mats
+    for i,matGUID in ipairs(PLAYERMATS_GUID) do
+        local mat = getObjectFromGUID(matGUID)
+        mat.destruct()
+        bag.takeObject({
+            position = MAT_LOC[i],
+            rotation = MAT_ROT[i],
+            smooth = true,
+            guid = PLAYERMATS_OCEANIA_GUID[i]
+        })
+    end
+    PLAYERMATS_GUID = PLAYERMATS_OCEANIA_GUID
+    Wait.condition(
+        function()
+            for _,matGUID in ipairs(PLAYERMATS_GUID) do
+                local mat = getObjectFromGUID(matGUID)
+                mat.setLock(true)
+            end
+        end,
+        function()
+            local allResting = {}
+            for i,matGUID in ipairs(PLAYERMATS_GUID) do
+                local mat = getObjectFromGUID(matGUID)
+                allResting[i] = mat.resting
+            end
+            return all(allResting)
+        end
+    )
+    -- change global definition
+    isOceaniaAdded = true
+    log("Oceania expansion setup complete")
+end
+
+function resetBirdfeeder()
+    for i,dieGUID in ipairs(DICE_GUID) do
+        local die = getObjectFromGUID(dieGUID)
+        die.setPositionSmooth(DICE_LOC[i],false,true)
+    end
+    Wait.condition(
+        function()
+            for _,dieGUID in ipairs(DICE_GUID) do
+                local die = getObjectFromGUID(dieGUID)
+                die.shuffle()
+            end
+            Wait.condition(
+                function()
+                    for i,dieGUID in ipairs(DICE_GUID) do
+                        local die = getObjectFromGUID(dieGUID)
+                        local rotVal = die.getRotationValue()
+                        die.setPositionSmooth(DICE_LOC[i],false,true)
+                        die.setRotationSmooth(DICE_ROT[rotVal],false,true)
+                    end
+                    log("Birdfeeder reset complete")
+                end,
+                function()
+                    local isResting = {}
+                    for i,dieGUID in ipairs(DICE_GUID) do
+                        local die = getObjectFromGUID(dieGUID)
+                        isResting[i] = die.resting
+                    end
+                    return all(isResting)
+                end
+            )
+        end,
+        function()
+            local isResting = {}
+            local isInPos = {}
+            for i,dieGUID in ipairs(DICE_GUID) do
+                local die = getObjectFromGUID(dieGUID)
+                isResting[i] = die.resting
+                local pos = die.getPosition()
+                local condX = math.abs(pos.x-DICE_LOC[i][1])<.1
+                local condZ = math.abs(pos.z-DICE_LOC[i][3])<.1
+                isInPos[i] = condX and condZ
+            end
+            return all(isResting) and all(isInPos)
+        end
+    )
+end
+
+function refillRiver()
+    for _,zoneGUID in ipairs(RIVERZONES_GUID) do
+        local zone = getObjectFromGUID(zoneGUID)
+        if #zone.getObjects()==0 then
+            local birdDeck = getObjectFromGUID(BIRDDECK_GUID)
+            birdDeck.takeObject({
+                position = zone.getPosition(),
+                smooth   = true,
+                flip     = true,
+            })
+        end
+    end
+end
+
+function onObjectLeaveContainer(container,object)
+    if isin(container.getGUID(),RESOURCEBAGS_GUID) then
+        local tag = RESOURCES[find(container.getGUID(),RESOURCEBAGS_GUID)]
+        log(tag)
+        object.addTag(tag)
+    end
+end
