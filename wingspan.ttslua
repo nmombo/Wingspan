@@ -89,7 +89,7 @@ function onLoad()
         buttonTable.click_function = "click_function"..tostring(j)
         self.setVar(
             buttonTable.click_function,
-            function(o,c,a) resourceAdd(c,j) end
+            function(o,c,a) resourceAdd(o,c,j,a) end
         )
         birdfeeder.createButton(buttonTable)
     end 
@@ -244,7 +244,8 @@ function resourceChange(matObj,color,altClick,i,j)
     end
 end
 
-function resourceAdd(color,j)
+function resourceAdd(_,color,j,altClick)
+    if altClick then return end
     local bag = getObjectFromGUID(RESOURCEBAGS_GUID[j])
     local matObj = getObjectFromGUID(RESOURCEMATS_GUID[find(color,COLORS)])
     local matPos = matObj.getPosition()
