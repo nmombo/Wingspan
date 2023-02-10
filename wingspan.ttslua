@@ -188,7 +188,49 @@ function onLoad()
     end
     -- activate gatherOmat
     Global.UI.setAttribute("gatherOmat","active",true)
+    -- create counter retrieve buttons
+    for i,matGUID in ipairs(RESOURCEMATS_GUID) do
+        local mat = getObjectFromGUID(matGUID)
+        local buttonTable = {}
+        buttonTable.label          = "Retreieve\nTurn Counters"
+        buttonTable.position       = COUNTERBUTTONS_LOC[i]
+        buttonTable.rotation       = {0,0,0}
+        buttonTable.scale          = {0.1,0.1,0.1}
+        buttonTable.width          = 4000
+        buttonTable.height         = 1200
+        buttonTable.font_size      = 600
+        buttonTable.color          = Color.fromString(COLORS[i])
+        buttonTable.font_color     = Color.fromString(COLORS_BUTTONFONT[i])
+        buttonTable.click_function = "click_function_r"..tostring(i)
+        self.setVar(
+            buttonTable.click_function,
+            function(o,c,a) retrieveCounters(o,c,a,i) end
+        )
+        mat.createButton(buttonTable)
+    end
 end
+
+-- DISABLED BECAUSE COUNTERS_GUID AND COUNTERS_LOC MIGHT NOT BE CORRELATED CORRECTLY
+-- function retrieveCounters(obj,color,altClick,i)
+--     for j,counterGUID in ipairs(COUNTERS_GUID[i]) do
+--         local counter = getObjectFromGUID(counterGUID)
+--         local scored = false
+--         for _,row in ipairs(GOALZONES_GUID) do
+--             for _,zoneGUID in ipairs(row) do
+--                 local zone = getObjectFromGUID(zoneGUID)
+--                 log(zone.getObjects())
+--                 if isin(counter,zone.getObjects()) then
+--                     scored = true
+--                     log(scored)
+--                 end
+--             end
+--         end
+--         if scored then break end
+--         local setPos = COUNTERS_LOC[i][j]
+--         counter.setPositionSmooth({setPos[1],2,setPos[3]},false,true)
+--         counter.setRotationSmooth({0,0,0},false,true)
+--     end
+-- end
 
 function gatherOmatOff()
     Global.UI.setAttribute("gatherOmat","active",false)
