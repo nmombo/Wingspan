@@ -1,6 +1,7 @@
 -- Universal
 TRAY_GUID = "73d70d"
 BIRDFEEDER_GUID = "b0c55d"
+FIRSTPLAYER_GUID = "1b547b"
 PLAYERMATS_GUID = {
     "dee41d",
     "a3b106",

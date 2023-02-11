@@ -11,6 +11,7 @@ Tasks
     Reset action counters button
     Scoring
     First player tokens
+    Camera shortcuts
 ]]
 
 -- import files
@@ -63,9 +64,9 @@ function onLoad()
         position       = {0,-10,-15},
         rotation       = {0,180,0},
         scale          = {0.4,0.4,0.4},
-        width          = 3000,
+        width          = 3600,
         height         = 2000,
-        font_size      = 600,
+        font_size      = 800,
         color          = "Brown",
         font_color     = "White"
     })
@@ -253,7 +254,7 @@ function resourceChange(matObj,color,altClick,i,j)
         end
         log("Not enough "..RESOURCES[j].." for "..color.." to subtract 1")
         broadcastToColor("Not enough "..RESOURCES[j].." to subtract 1",color)
-    else --add
+    else -- add
         local bag = getObjectFromGUID(RESOURCEBAGS_GUID[j])
         local matPos = matObj.getPosition()
         local matRot = matObj.getRotation()
@@ -272,28 +273,6 @@ function resourceChange(matObj,color,altClick,i,j)
         end
         bag.takeObject(takeTab)
     end
-end
-
-function resourceAdd(_,color,j,altClick)
-    if altClick then return end
-    local bag = getObjectFromGUID(RESOURCEBAGS_GUID[j])
-    local matObj = getObjectFromGUID(RESOURCEMATS_GUID[find(color,COLORS)])
-    local matPos = matObj.getPosition()
-    local matRot = matObj.getRotation()
-    local takeTab = {}
-    takeTab.rotation = matRot
-    takeTab.smooth = true
-    local tol = 1
-    if matRot.y<0+tol or matRot.y>360-tol then
-        takeTab.position = {matPos.x-0.2,3,matPos.z-3.14+(0.9*j)}
-    elseif matRot.y>90-tol and matRot.y<90+tol then
-        takeTab.position = {matPos.x-3.14+(0.9*j),3,matPos.z+0.3}
-    elseif matRot.y>180-tol and matRot.y<180+tol then
-        takeTab.position = {matPos.x+0.2,3,matPos.z+3.14+(-0.9*j)}
-    else
-        takeTab.position = {matPos.x+3.14-(0.9*j),3,matPos.z-0.3}
-    end
-    bag.takeObject(takeTab)
 end
 
 function setup()
@@ -341,6 +320,18 @@ function setup()
     refillRiver()
     -- reset birdfeeder
     resetBirdfeeder()
+    -- select first player 
+    local players = Player.getPlayers()
+    local firstPlayeri = math.random(#players)
+    broadcastToAll(
+        COLORS[firstPlayeri].." selected as first player",
+        Color.fromString(COLORS[firstPlayeri])
+    )
+    local token = getObjectFromGUID(FIRSTPLAYER_GUID)
+    token.setPositionSmooth(FIRSTPLAYER_LOC[firstPlayeri])
+    token.setRotationSmooth(FIRSTPLATER_ROT[firstPlayeri])
+    -- end
+    log("Setup complete")
 end
 
 function europeEnable()
@@ -530,7 +521,7 @@ function refillRiver()
                 flip     = true,
             })
             hasRiverWaited[zoneGUID] = false
-            Wait.time(function() hasRiverWaited[zoneGUID]=true end,2)
+            Wait.time(function() hasRiverWaited[zoneGUID]=true end,1)
         end
     end
     log("River refilled")
