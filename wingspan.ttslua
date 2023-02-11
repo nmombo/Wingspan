@@ -13,10 +13,13 @@ Tasks
     First player tokens
 ]]
 
+-- import files
 require("guids")
 require("constants")
 require("../utils")
+require("eventHandlers")
 
+-- global vars
 isEuropeAdded = false
 isOceaniaAdded = false
 hasRiverWaited = {
@@ -519,68 +522,16 @@ end
 function refillRiver()
     for _,zoneGUID in ipairs(RIVERZONES_GUID) do
         local zone = getObjectFromGUID(zoneGUID)
-        if #zone.getObjects()==0 then
+        if #zone.getObjects()==0 and hasRiverWaited[zoneGUID] then
             local birdDeck = getObjectFromGUID(BIRDDECK_GUID)
             birdDeck.takeObject({
                 position = zone.getPosition(),
                 smooth   = true,
                 flip     = true,
             })
+            hasRiverWaited[zoneGUID] = false
+            Wait.time(function() hasRiverWaited[zoneGUID]=true end,2)
         end
     end
-end
-
-function onObjectLeaveContainer(container,object)
-    if isin(container.getGUID(),RESOURCEBAGS_GUID) then
-        local tag = RESOURCES[find(container.getGUID(),RESOURCEBAGS_GUID)]
-        object.addTag(tag)
-    end
-end
-
-function onObjectEnterScriptingZone(zone,_)
-    if isin(zone.getGUID(),RESOURCEZONES_GUID) then
-        local count = {0,0,0,0,0,0}
-        for _,obj in ipairs(zone.getObjects()) do
-            for j,resource in ipairs(RESOURCES) do
-                if isin(resource,obj.getTags()) then
-                    if obj.getData().Number==nil then
-                        count[j] = count[j]+1
-                    else
-                        count[j] = count[j]+obj.getData().Number
-                    end
-                end
-            end
-        end
-        local i = find(zone.getGUID(),RESOURCEZONES_GUID)
-        local mat = getObjectFromGUID(RESOURCEMATS_GUID[i])
-        for j=1,6 do
-            mat.UI.setAttribute(tostring(j),"text",count[j])
-            local id = COLORS[i]..RESOURCES[j].."Text"
-            Global.UI.setAttribute(id,"text",count[j])
-        end
-    end
-end
-
-function onObjectLeaveScriptingZone(zone,_)
-    if isin(zone.getGUID(),RESOURCEZONES_GUID) then
-        local count = {0,0,0,0,0,0}
-        for _,obj in ipairs(zone.getObjects()) do
-            for j,resource in ipairs(RESOURCES) do
-                if isin(resource,obj.getTags()) then
-                    if obj.getData().Number==nil then
-                        count[j] = count[j]+1
-                    else
-                        count[j] = count[j]+obj.getData().Number
-                    end
-                end
-            end
-        end
-        local i = find(zone.getGUID(),RESOURCEZONES_GUID)
-        local mat = getObjectFromGUID(RESOURCEMATS_GUID[i])
-        for j=1,6 do
-            mat.UI.setAttribute(tostring(j),"text",count[j])
-            local id = COLORS[i]..RESOURCES[j].."Text"
-            Global.UI.setAttribute(id,"text",count[j])
-        end
-    end
+    log("River refilled")
 end
