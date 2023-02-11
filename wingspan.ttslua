@@ -5,11 +5,10 @@ Completed
     Reset birdfeeder button
     Refill river button
     Food gain/pay buttons
+    Food counter mat
     Gather-O-Mat
-    Food counters
 Tasks
     Reset action counters button
-    Egg counters
     Scoring
     First player tokens
 ]]
@@ -17,7 +16,6 @@ Tasks
 require("guids")
 require("constants")
 require("../utils")
-
 
 isEuropeAdded = false
 isOceaniaAdded = false
@@ -28,41 +26,32 @@ hasRiverWaited = {
 }
 
 function onLoad()
-    -- create setup button
+    -- create setup and expansion buttons
     local tray = getObjectFromGUID(TRAY_GUID)
-    tray.createButton({
-        click_function = "setup",
-        label          = "Setup",
-        position       = {0,0.15,3},
-        rotation       = {0,0,0},
-        scale          = {0.3,0.3,0.3},
-        width          = 3000,
-        height         = 1000,
-        font_size      = 1000
-    })
-    -- create expansion buttons
-    local europeanBag=getObjectFromGUID(EUROPEANBAG_GUID)
-    europeanBag.createButton({
-        click_function = "europeEnable",
-        label          = "Enable\nEuropean\nExpansion",
-        position       = {-3,0.15,0},
-        rotation       = {0,0,0},
-        scale          = {0.4,0.4,0.4},
-        width          = 3000,
-        height         = 3000,
-        font_size      = 600
-    })
-    local oceanianBag=getObjectFromGUID(OCEANIANBAG_GUID)
-    oceanianBag.createButton({
-        click_function = "oceaniaEnable",
-        label          = "Enable\nOceania\nExpansion",
-        position       = {-3,0.15,0},
-        rotation       = {0,0,0},
-        scale          = {0.4,0.4,0.4},
-        width          = 3000,
-        height         = 3000,
-        font_size      = 600
-    })
+    local click_functions = {"setup","europeEnable",'oceaniaEnable'}
+    local labels = {"Setup",
+        "Enable\nEuropean\nExpansion",
+        "Enable\nOceania\nExpansion"}
+    local scales = {0.3,0.3,0.3}
+    local widths = {3000,2000,2000}
+    local heights = {1000,1500,1500}
+    local positions = {{0,0.15,3},
+        {-1,0.15,2},
+        { 1,0.15,2}}
+    local rotations = {0,0,0}
+    local font_sizes = {1000,300,300}
+    local font_styles = {""}
+    for i = 1,3 do
+        local buttonTable = {}
+        buttonTable.click_function = click_functions[i]
+        buttonTable.label          = labels[i]
+        buttonTable.scale          = {scales[i],scales[i],scales[i]}
+        buttonTable.width          = widths[i]
+        buttonTable.height         = heights[i]
+        buttonTable.position       = positions[i]
+        buttonTable.font_size      = font_sizes[i]
+        tray.createButton(buttonTable)
+    end
     -- create reset birdfeeder button
     local birdfeeder=getObjectFromGUID(BIRDFEEDER_GUID)
     birdfeeder.createButton({
@@ -306,9 +295,15 @@ end
 
 function setup()
     log("Setup button clicked")
-    -- remove setup button
+    -- remove setup buttons
     local tray = getObjectFromGUID(TRAY_GUID)
-    tray.removeButton(0)
+    local indices = {}
+    for i=1,#tray.getButtons() do
+        indices[i]=tray.getButtons()[i].index
+    end
+    for _,i in ipairs(reverse(indices)) do
+        tray.removeButton(i)
+    end
     -- shuffle and deal decks
     local birdDeck = getObjectFromGUID(BIRDDECK_GUID)
     local bonusDeck = getObjectFromGUID(BONUSDECK_GUID)
@@ -330,7 +325,6 @@ function setup()
     end
     log("Round goals selected")
     -- fill river
-    local tray = getObjectFromGUID(TRAY_GUID)
     tray.createButton({
         click_function = "refillRiver",
         label          = "Refill",
@@ -347,10 +341,13 @@ function setup()
 end
 
 function europeEnable()
+    log("Enable European Expansion button clicked")
     -- remove button
-    local bag = getObjectFromGUID(EUROPEANBAG_GUID)
-    bag.removeButton(0)
+    local tray = getObjectFromGUID(TRAY_GUID)
+    tray.removeButton(1)
+    log("Expansion button removed")
     -- add bird deck, bonus deck, and round end tokens
+    local bag = getObjectFromGUID(EUROPEANBAG_GUID)
     local baseGUIDs = {BIRDDECK_GUID,BONUSDECK_GUID,ROUNDGOALS_GUID}
     local addGUIDs = {BIRDDECK_EUROPE_GUID,BONUSDECK_EUROPE_GUID,ROUNDGOALS_EUROPE_GUID}
     local add
@@ -367,6 +364,7 @@ function europeEnable()
             guid     = addGUIDs[i]
         })
     end
+    log("Bird deck, bonus deck, and round end tokens added")
     -- shuffle decks
     Wait.condition(
         function() -- execute
@@ -391,10 +389,13 @@ function europeEnable()
 end
 
 function oceaniaEnable()
+    log("Enable Oceania Expansion button clicked")
     -- remove button
-    local bag = getObjectFromGUID(OCEANIANBAG_GUID)
-    bag.removeButton(0)
+    local tray = getObjectFromGUID(TRAY_GUID)
+    if isEuropeAdded then tray.removeButton(1)
+    else tray.removeButton(2) end
     -- add bird deck, bonus deck, and round end tokens
+    local bag = getObjectFromGUID(OCEANIANBAG_GUID)
     local baseGUIDs = {BIRDDECK_GUID,BONUSDECK_GUID,ROUNDGOALS_GUID}
     local addGUIDs = {BIRDDECK_OCEANIA_GUID,BONUSDECK_OCEANIA_GUID,ROUNDGOALS_OCEANIA_GUID}
     local add
@@ -441,22 +442,6 @@ function oceaniaEnable()
         })
     end
     DICE_GUID = DICE_OCEANIA_GUID
-    Wait.condition(
-        function()
-            for _,dieGUID in ipairs(DICE_GUID) do
-                local die = getObjectFromGUID(dieGUID)
-                die.shuffle()
-            end
-        end,
-        function()
-            local allResting = {}
-            for i,dieGUID in ipairs(DICE_GUID) do
-                local die = getObjectFromGUID(dieGUID)
-                allResting[i] = die.resting
-            end
-            return all(allResting)
-        end
-    )
     -- flip player mats
     for i,matGUID in ipairs(PLAYERMATS_GUID) do
         local mat = getObjectFromGUID(matGUID)
@@ -571,7 +556,6 @@ function onObjectEnterScriptingZone(zone,_)
         for j=1,6 do
             mat.UI.setAttribute(tostring(j),"text",count[j])
             local id = COLORS[i]..RESOURCES[j].."Text"
-            log(id)
             Global.UI.setAttribute(id,"text",count[j])
         end
     end
@@ -596,7 +580,6 @@ function onObjectLeaveScriptingZone(zone,_)
         for j=1,6 do
             mat.UI.setAttribute(tostring(j),"text",count[j])
             local id = COLORS[i]..RESOURCES[j].."Text"
-            log(id)
             Global.UI.setAttribute(id,"text",count[j])
         end
     end
