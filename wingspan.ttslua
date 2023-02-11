@@ -5,13 +5,13 @@ Completed
     Reset birdfeeder button
     Refill river button
     Food gain/pay buttons
-    Birdfeeder gain buttons
+    Gather-O-Mat
     Food counters
 Tasks
     Reset action counters button
     Egg counters
-    Replace birdfeeder buttons with Gather-O-Mat
     Scoring
+    First player tokens
 ]]
 
 require("guids")
@@ -68,32 +68,15 @@ function onLoad()
     birdfeeder.createButton({
         click_function = "resetBirdfeeder",
         label          = "Reset\nBirdfeeder",
-        position       = {-6.2,-10,-15},
+        position       = {0,-10,-15},
         rotation       = {0,180,0},
         scale          = {0.4,0.4,0.4},
         width          = 3000,
         height         = 2000,
-        font_size      = 600
+        font_size      = 600,
+        color          = "Brown",
+        font_color     = "White"
     })
-    -- create birdfeeder resource buttons
-    for j,_ in ipairs(RESOURCEBAGS_GUID) do
-        local buttonTable = {}
-        buttonTable.label = "+\n"..RESOURCES[j]
-        buttonTable.position = {-5.2+(2*j),-10,-15}
-        buttonTable.rotation = {0,180,0}
-        buttonTable.scale = {0.4,0.4,0.4}
-        buttonTable.width = 2200
-        buttonTable.height = 2000
-        buttonTable.font_size = 600
-        buttonTable.color = RESOURCE_COLORS[j]
-        buttonTable.font_color = "Black"
-        buttonTable.click_function = "click_function"..tostring(j)
-        self.setVar(
-            buttonTable.click_function,
-            function(o,c,a) resourceAdd(o,c,j,a) end
-        )
-        birdfeeder.createButton(buttonTable)
-    end 
     -- create resource mat buttons
     for i,matGUID in ipairs(RESOURCEMATS_GUID) do
         local mat = getObjectFromGUID(matGUID)
@@ -211,7 +194,7 @@ function onLoad()
 end
 
 -- DISABLED BECAUSE COUNTERS_GUID AND COUNTERS_LOC MIGHT NOT BE CORRELATED CORRECTLY
--- function retrieveCounters(obj,color,altClick,i)
+function retrieveCounters(obj,color,altClick,i)
 --     for j,counterGUID in ipairs(COUNTERS_GUID[i]) do
 --         local counter = getObjectFromGUID(counterGUID)
 --         local scored = false
@@ -230,7 +213,7 @@ end
 --         counter.setPositionSmooth({setPos[1],2,setPos[3]},false,true)
 --         counter.setRotationSmooth({0,0,0},false,true)
 --     end
--- end
+end
 
 function gatherOmatOff()
     Global.UI.setAttribute("gatherOmat","active",false)
@@ -240,6 +223,18 @@ end
 function gatherOmatOn()
     Global.UI.setAttribute("gatherOmat","active",true)
     Global.UI.setAttribute("minigatherOmat","active",false)
+end
+
+function gatherOmatClick(player, value, id)
+    local color = player.color
+    local i = find(color,COLORS)
+    local matObj = getObjectFromGUID(RESOURCEMATS_GUID[i])
+    local j = find(Global.UI.getAttribute(id,"item"),RESOURCES)
+    local altClick=nil
+    if value=="-1" then altClick=false
+    elseif value=="-2" then altClick=true
+    else altClick=nil end
+    resourceChange(matObj,color,altClick,i,j)
 end
 
 function resourceChange(matObj,color,altClick,i,j)
@@ -573,8 +568,11 @@ function onObjectEnterScriptingZone(zone,_)
         end
         local i = find(zone.getGUID(),RESOURCEZONES_GUID)
         local mat = getObjectFromGUID(RESOURCEMATS_GUID[i])
-        for i=1,6 do
-            mat.UI.setAttribute(tostring(i),"text",count[i])
+        for j=1,6 do
+            mat.UI.setAttribute(tostring(j),"text",count[j])
+            local id = COLORS[i]..RESOURCES[j].."Text"
+            log(id)
+            Global.UI.setAttribute(id,"text",count[j])
         end
     end
 end
@@ -595,8 +593,11 @@ function onObjectLeaveScriptingZone(zone,_)
         end
         local i = find(zone.getGUID(),RESOURCEZONES_GUID)
         local mat = getObjectFromGUID(RESOURCEMATS_GUID[i])
-        for i=1,6 do
-            mat.UI.setAttribute(tostring(i),"text",count[i])
+        for j=1,6 do
+            mat.UI.setAttribute(tostring(j),"text",count[j])
+            local id = COLORS[i]..RESOURCES[j].."Text"
+            log(id)
+            Global.UI.setAttribute(id,"text",count[j])
         end
     end
 end

@@ -1,56 +1,183 @@
+<Defaults>
+    <Panel class="score" height="40" width="40" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1"/>
+</Defaults>
+
 <!-- Gather-O-Mat -->
-<Panel
-    id="gatherOmat"
-    height="255"
-    width="240"
-    color="#3C3A39"
-    rectAlignment="Lowerright"
-    allowDragging="false"
-    active="false"
-    >
+<Panel id="gatherOmat" height="255" width="200" color="#3C3A39" rectAlignment="Lowerright" allowDragging="false" active="false">
+    <Button id="GOMButton" onClick="gatherOmatOff" height="15" width="200" color="#128712" textcolor="#ffffff" rectAlignment="Upperright"></Button>
+    <text id="GOMHead" color="#FFFFFF" offsetXY="0 121">Gather-O-Mat</text>
 
-    <Button
-        id="GOMButton"
-        onClick="gatherOmatOff"
-        height="15"
-        width="240"
-        color="#128712"
-        textColor="#000000"
-        rectAlignment="Upperright"
-    ></Button>
+    <!-- Rodents -->
+    <Panel class="score" color="White" offsetXY="0 -15" id="WhiteRodents">
+        <Button id="spawnRodents" onClick="gatherOmatClick" item="Rodents" height="40" width="200" color="#ffffff" rectAlignment="UpperLeft"></Button>
+        <image image="rodent" height="35" width="35" preserveAspect="true">
+            <text id="WhiteRodentsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Yellow" offsetXY="40 -15"  id="YellowRodents">
+        <image image="rodent" height="35" width="35" preserveAspect="true">
+            <text id="YellowRodentsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Green" offsetXY="80 -15"  id="GreenRodents">
+        <image image="rodent" height="35" width="35" preserveAspect="true">
+            <text id="GreenRodentsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Blue" offsetXY="120 -15"  id="BlueRodents">
+        <image image="rodent" height="35" width="35" preserveAspect="true">
+            <text id="BlueRodentsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Purple" offsetXY="160 -15"  id="PurpleRodents">
+        <image image="rodent" height="35" width="35" preserveAspect="true">
+            <text id="PurpleRodentsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
 
-    <text
-        id="GOMHead"
-        color="#FFFFFF"
-        offsetXY="0 121"
-        >Gather-O-Mat
-    </text>
+    <!-- Insects -->
+    <Panel class="score" color="White" offsetXY="0 -55" id="WhiteInsects">
+        <Button id="spawnInsects" onClick="gatherOmatClick" item="Insects" height="40" width="200" color="#ffffff" rectAlignment="UpperLeft"></Button>
+        <image image="insect" height="35" width="35" preserveAspect="true">
+            <text id="WhiteInsectsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Yellow" offsetXY="40 -55"  id="YellowInsects">
+        <image image="insect" height="35" width="35" preserveAspect="true">
+            <text id="YellowInsectsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Green" offsetXY="80 -55"  id="GreenInsects">
+        <image image="insect" height="35" width="35" preserveAspect="true">
+            <text id="GreenInsectsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Blue" offsetXY="120 -55"  id="BlueInsects">
+        <image image="insect" height="35" width="35" preserveAspect="true">
+            <text id="BlueInsectsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Purple" offsetXY="160 -55"  id="PurpleInsects">
+        <image image="insect" height="35" width="35" preserveAspect="true">
+            <text id="PurpleInsectsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+
+    <!-- Seeds -->
+    <Panel class="score" color="White" offsetXY="0 -95" id="WhiteSeeds">
+        <Button id="spawnSeeds" onClick="gatherOmatClick" item="Seeds" height="40" width="200" color="#ffffff" rectAlignment="UpperLeft"></Button>
+        <image image="seed" height="35" width="35" preserveAspect="true">
+            <text id="WhiteSeedsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Yellow" offsetXY="40 -95"  id="YellowSeeds">
+        <image image="seed" height="35" width="35" preserveAspect="true">
+            <text id="YellowSeedsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Green" offsetXY="80 -95"  id="GreenSeeds">
+        <image image="seed" height="35" width="35" preserveAspect="true">
+            <text id="GreenSeedsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Blue" offsetXY="120 -95"  id="BlueSeeds">
+        <image image="seed" height="35" width="35" preserveAspect="true">
+            <text id="BlueSeedsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Purple" offsetXY="160 -95"  id="PurpleSeeds">
+        <image image="seed" height="35" width="35" preserveAspect="true">
+            <text id="PurpleSeedsText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+
+    <!-- Fish -->
+    <Panel class="score" color="White" offsetXY="0 -135" id="WhiteFish">
+        <Button id="spawnFish" onClick="gatherOmatClick" item="Fish" height="40" width="200" color="#ffffff" rectAlignment="UpperLeft"></Button>
+        <image image="fish" height="35" width="35" preserveAspect="true">
+            <text id="WhiteFishText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Yellow" offsetXY="40 -135"  id="YellowFish">
+        <image image="fish" height="35" width="35" preserveAspect="true">
+            <text id="YellowFishText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Green" offsetXY="80 -135"  id="GreenFish">
+        <image image="fish" height="35" width="35" preserveAspect="true">
+            <text id="GreenFishText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Blue" offsetXY="120 -135"  id="BlueFish">
+        <image image="fish" height="35" width="35" preserveAspect="true">
+            <text id="BlueFishText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Purple" offsetXY="160 -135"  id="PurpleFish">
+        <image image="fish" height="35" width="35" preserveAspect="true">
+            <text id="PurpleFishText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+
+    <!-- Fruit -->
+    <Panel class="score" color="White" offsetXY="0 -175" id="WhiteFruit">
+        <Button id="spawnFruit" onClick="gatherOmatClick" item="Fruit" height="40" width="200" color="#ffffff" rectAlignment="UpperLeft"></Button>
+        <image image="fruit" height="35" width="35" preserveAspect="true">
+            <text id="WhiteFruitText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Yellow" offsetXY="40 -175"  id="YellowFruit">
+        <image image="fruit" height="35" width="35" preserveAspect="true">
+            <text id="YellowFruitText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Green" offsetXY="80 -175"  id="GreenFruit">
+        <image image="fruit" height="35" width="35" preserveAspect="true">
+            <text id="GreenFruitText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Blue" offsetXY="120 -175"  id="BlueFruit">
+        <image image="fruit" height="35" width="35" preserveAspect="true">
+            <text id="BlueFruitText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Purple" offsetXY="160 -175"  id="PurpleFruit">
+        <image image="fruit" height="35" width="35" preserveAspect="true">
+            <text id="PurpleFruitText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+
+    <!-- Nectar -->
+    <Panel class="score" color="White" offsetXY="0 -215" id="WhiteNectar">
+        <Button id="spawnNectar" onClick="gatherOmatClick" item="Nectar" height="40" width="200" color="#ffffff" rectAlignment="UpperLeft"></Button>
+        <image image="nectar" height="35" width="35" preserveAspect="true">
+            <text id="WhiteNectarText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Yellow" offsetXY="40 -215"  id="YellowNectar">
+        <image image="nectar" height="35" width="35" preserveAspect="true">
+            <text id="YellowNectarText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Green" offsetXY="80 -215"  id="GreenNectar">
+        <image image="nectar" height="35" width="35" preserveAspect="true">
+            <text id="GreenNectarText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Blue" offsetXY="120 -215"  id="BlueNectar">
+        <image image="nectar" height="35" width="35" preserveAspect="true">
+            <text id="BlueNectarText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
+    <Panel class="score" color="Purple" offsetXY="160 -215"  id="PurpleNectar">
+        <image image="nectar" height="35" width="35" preserveAspect="true">
+            <text id="PurpleNectarText" fontSize="30" fontStyle="Bold" color="#000000" text="0"></text>
+        </image>
+    </Panel>
 </Panel>
 
 <!-- Mini GOM -->
-<Panel
-    id="minigatherOmat"
-    height="15"
-    width="160"
-    color="#3C3A39"
-    rectAlignment="Lowerright"
-    allowDragging="true"
-    returnToOriginalPositionWhenReleased="false"
-    active="false"
-    >
-
-    <Button
-        onClick="gatherOmatOn"
-        height="15"
-        width="160"
-        color="#128712"
-        textColor="#000000"
-        rectAlignment="UpperRight"
-        >
-    </Button>
-    
-    <text
-        color="#FFFFFF"
-        >Gather-O-Mat
-    </text>
+<Panel id="minigatherOmat" height="15" width="160" color="#3C3A39" rectAlignment="Lowerright" allowDragging="true" returnToOriginalPositionWhenReleased="false" active="false">
+    <Button onClick="gatherOmatOn" height="15" width="160" color="#128712" textcolor="#ffffff" rectAlignment="UpperRight"></Button>
+    <text color="#FFFFFF">Gather-O-Mat</text>
 </Panel>
