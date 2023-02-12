@@ -10,8 +10,9 @@ Completed
     Round end button
     Scoring
     Camera shortcuts
-Tasks
     Player mat spend nectar buttons
+Tasks
+    Cache buttons
 ]]
 
 -- import files
@@ -339,6 +340,14 @@ function setup()
     local token = getObjectFromGUID(FIRSTPLAYER_GUID)
     token.setPositionSmooth(FIRSTPLAYER_LOC[firstPlayeri])
     token.setRotationSmooth(FIRSTPLAYER_ROT[firstPlayeri])
+    -- give nectar token to each player
+    if isOceaniaAdded then
+        for _,player in ipairs(players) do
+            local playeri = find(player.color,COLORS)
+            local resourceMat = getObjectFromGUID(RESOURCEMATS_GUID[playeri])
+            resourceChange(resourceMat,player.color,false,playeri,6)
+        end
+    end
     -- setup player-based UI elements
     for _,player in ipairs(players) do
         Global.UI.setAttribute("Name"..player.color,"text",player.steam_name)
@@ -457,9 +466,27 @@ function oceaniaEnable()
     end
     Wait.condition(
         function()
-            for _,matGUID in ipairs(PLAYERMATS_GUID) do
+            for i,matGUID in ipairs(PLAYERMATS_GUID) do
                 local mat = getObjectFromGUID(matGUID)
                 mat.setLock(true) 
+                for j=1,3 do
+                    local buttonTable = {}
+                    buttonTable.label          = "Spend\nNectar"
+                    buttonTable.position       = {1.365,-0.01,-1.19+(0.63*j)}
+                    buttonTable.rotation       = {0,0,180}
+                    buttonTable.scale          = {0.1,0.1,0.1}
+                    buttonTable.width          = 700
+                    buttonTable.height         = 500
+                    buttonTable.font_size      = 200
+                    buttonTable.color          = RESOURCE_COLORS[6]
+                    buttonTable.font_color     = "White"
+                    buttonTable.click_function = "cf_spendNectar"..tostring(i)..tostring(j)
+                    self.setVar(
+                        buttonTable.click_function,
+                        function(o,c,a) spendNectar(o,c,a,i,j) end
+                    )
+                    mat.createButton(buttonTable)
+                end
             end
         end,
         function()
@@ -477,6 +504,33 @@ function oceaniaEnable()
     -- change global definition
     isOceaniaAdded = true
     log("Oceania expansion setup complete")
+end
+
+function spendNectar(obj,color,altClick,i,j)
+    if(color~=COLORS[i]) then
+        log(color.." spent "..COLORS[i].."'s nectar")
+        broadcastToColor("Caution: you're spending another player's nectar",color)
+    end
+    if altClick then -- remove 1
+    else -- add 1
+        -- local bag = getObjectFromGUID(RESOURCEBAGS_GUID[6])
+        -- bag.takeObject({position=NECTAR_LOC[i][j],smooth=true})
+        -- resourceChange(getObjectFromGUID(RESOURCEMATS_GUID[i]),color,true,i,6)
+        local zone = getObjectFromGUID(RESOURCEZONES_GUID[i])
+        for _,obj in ipairs(zone.getObjects()) do
+            if isin("Nectar",obj.getTags()) then
+                local setPos = {NECTAR_LOC[i][j][1],2,NECTAR_LOC[i][j][3]}
+                if obj.getData().Number==nil then
+                    obj.setPositionSmooth(setPos,false,true)
+                    return
+                else
+                    obj.takeObject({position=setPos,smooth=true})
+                    return
+                end
+            end
+        end
+        broadcastToColor("Not enough nectar to spend 1",color)
+    end
 end
 
 function resetBirdfeeder()
