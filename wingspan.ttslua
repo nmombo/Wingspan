@@ -7,10 +7,9 @@ Completed
     Food gain/pay buttons
     Food counter mat
     Gather-O-Mat
-    First player tokens
+    Round end button
     Scoring
 Tasks
-    Round end button (river, rotate, nectar)
     Camera shortcuts
     Player mat spend nectar buttons
 ]]
@@ -30,6 +29,7 @@ hasRiverWaited = {
     ["89b212"]=true,
     ["4c4ee4"]=true
 }
+hasRoundWaited = true
 scores = {{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}}             
 
 function onLoad()
@@ -337,7 +337,7 @@ function setup()
     )
     local token = getObjectFromGUID(FIRSTPLAYER_GUID)
     token.setPositionSmooth(FIRSTPLAYER_LOC[firstPlayeri])
-    token.setRotationSmooth(FIRSTPLATER_ROT[firstPlayeri])
+    token.setRotationSmooth(FIRSTPLAYER_ROT[firstPlayeri])
     -- setup player-based UI elements
     for _,player in ipairs(players) do
         Global.UI.setAttribute("Name"..player.color,"text",player.steam_name)
@@ -540,4 +540,63 @@ function refillRiver()
         end
     end
     log("River refilled")
+end
+
+function roundEnd()
+    if hasRoundWaited then
+        hasRoundWaited = false
+        log("Round ending")
+        Wait.time(function() hasRoundWaited=true end,2)
+        -- reset river
+        for _,zoneGUID in ipairs(RIVERZONES_GUID) do
+            local zone = getObjectFromGUID(zoneGUID)
+            for _,obj in ipairs(zone.getObjects()) do
+                obj.setPositionSmooth({BIRDDISCARD_LOC[1],4,BIRDDISCARD_LOC[3]},false,true)
+            end
+        end
+        Wait.condition(
+            function()
+                refillRiver()
+            end,
+            function()
+                local isEmpty = {false,false,false}
+                for i,zoneGUID in ipairs(RIVERZONES_GUID) do
+                    local zone = getObjectFromGUID(zoneGUID)
+                    if #zone.getObjects()==0 then isEmpty[i] = true end
+                end    
+                return all(isEmpty)
+            end
+        )
+        -- rotate first player
+        local players = Player.getPlayers()
+        local playersi = {}
+        local i = 1
+        for _,player in ipairs(players) do
+            playersi[i] = find(player.color,COLORS)
+            i = i + 1
+        end
+        playersi = table.sort(playersi)
+        for i,loc in ipairs(FIRSTPLAYER_LOC) do
+            local obj = findObjAt(loc)
+            if obj~=nil then
+                local j = find(i,playersi)+1
+                if j>#playersi then j=1 end
+                obj.setPositionSmooth(FIRSTPLAYER_LOC[j],false,true)
+                obj.setRotationSmooth(FIRSTPLAYER_ROT[j],false,true)
+                break
+            end
+        end
+        -- discard nectar
+        for i,zoneGUID in ipairs(RESOURCEZONES_GUID) do
+            local zone = getObjectFromGUID(zoneGUID)
+            for _,obj in ipairs(zone.getObjects()) do
+                if isin("Nectar",obj.getTags()) then
+                    log(obj.getData())
+                    local trash = getObjectFromGUID(TRASH_GUID[i])
+                    local setPos = trash.getPosition()
+                    obj.setPositionSmooth({setPos.x,4,setPos.z},false,true)
+                end
+            end
+        end
+    end
 end
