@@ -9,12 +9,26 @@ PLAYERMATS_GUID = {
     "a11f20",
     "4b82e3"
 }
+PLAYERMATZONES_GUID = {
+    "4054f0",
+    "6488aa",
+    "17f4c9",
+    "46d54d",
+    "b6bd56"
+}
 RESOURCEMATS_GUID = {
     "88a6f7",
     "f41518",
     "9f29d0",
     "5492cc",
     "ef602e"
+}
+RESOURCEZONES_GUID = {
+    "89bbe4",
+    "acd52b",
+    "e065e5",
+    "74c0a6",
+    "9df79c"
 }
 RESOURCEBAGS_GUID = {
     "d52985",
@@ -24,12 +38,12 @@ RESOURCEBAGS_GUID = {
     "66429a",
     "02c4c6"
 }
-RESOURCEZONES_GUID = {
-    "89bbe4",
-    "acd52b",
-    "e065e5",
-    "74c0a6",
-    "9df79c"
+EGGBAGS_GUID = {
+    "cc125a",
+    "6ae6ed",
+    "ae4486",
+    "12d034",
+    "47a76c"
 }
 TRASH_GUID = {
     "288283",
@@ -69,7 +83,7 @@ COUNTERS_GREEN_GUID = {
     "54bfd4"
 }
 COUNTERS_BLUE_GUID = {
-    "54bfd4",
+    "3f417b",
     "d4f967",
     "5910ca",
     "a2fde2",
@@ -110,11 +124,11 @@ GOALZONES_2_GUID = {
 GOALZONES_3_GUID = {
     "fab1e9",
     "b95f59",
-    "b95f59",
-    "7c381a"
+    "7c381a",
+    "b285b2"
 }
 GOALZONES_4_GUID = {
-    "b285b2",
+    "35d00a",
     "9b1496",
     "2a663a",
     "2ee834"
@@ -127,7 +141,7 @@ GOALZONES_GUID = {
 }
 -- Base Game
 INSTRUCTIONSBAG_GUID = "64aee4"
-BIRDDECK_GUID = "6f8117"
+BIRDDECK_GUID = "d14838"
 BONUSDECK_GUID = "8939ea"
 ROUNDGOALS_GUID = "a7990b"
 DICE_GUID = {
@@ -139,12 +153,12 @@ DICE_GUID = {
 }
 -- European Expansion
 EUROPEANBAG_GUID = "315a33"
-BIRDDECK_EUROPE_GUID = "f8f276"
+BIRDDECK_EUROPE_GUID = "e5978f"
 BONUSDECK_EUROPE_GUID = "eab287"
 ROUNDGOALS_EUROPE_GUID = "0afd57"
 -- Oceania Expansion
 OCEANIANBAG_GUID = "1e2c52"
-BIRDDECK_OCEANIA_GUID = "fb1538"
+BIRDDECK_OCEANIA_GUID = "dbf9af"
 BONUSDECK_OCEANIA_GUID = "50817a"
 ROUNDGOALS_OCEANIA_GUID = "e75d74"
 DICE_OCEANIA_GUID = {

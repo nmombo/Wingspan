@@ -7,11 +7,12 @@ Completed
     Food gain/pay buttons
     Food counter mat
     Gather-O-Mat
-Tasks
-    Reset action counters button
-    Scoring
     First player tokens
+    Scoring
+Tasks
+    Round end button (river, rotate, nectar)
     Camera shortcuts
+    Player mat spend nectar buttons
 ]]
 
 -- import files
@@ -19,6 +20,7 @@ require("guids")
 require("constants")
 require("../utils")
 require("eventHandlers")
+require("scorePad")
 
 -- global vars
 isEuropeAdded = false
@@ -28,6 +30,7 @@ hasRiverWaited = {
     ["89b212"]=true,
     ["4c4ee4"]=true
 }
+scores = {{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}}             
 
 function onLoad()
     -- create setup and expansion buttons
@@ -162,28 +165,9 @@ function onLoad()
             end
         )
     end
-    -- activate gatherOmat
-    Global.UI.setAttribute("gatherOmat","active",true)
-    -- create counter retrieve buttons
-    for i,matGUID in ipairs(RESOURCEMATS_GUID) do
-        local mat = getObjectFromGUID(matGUID)
-        local buttonTable = {}
-        buttonTable.label          = "Retreieve\nTurn Counters"
-        buttonTable.position       = COUNTERBUTTONS_LOC[i]
-        buttonTable.rotation       = {0,0,0}
-        buttonTable.scale          = {0.1,0.1,0.1}
-        buttonTable.width          = 4000
-        buttonTable.height         = 1200
-        buttonTable.font_size      = 600
-        buttonTable.color          = Color.fromString(COLORS[i])
-        buttonTable.font_color     = Color.fromString(COLORS_BUTTONFONT[i])
-        buttonTable.click_function = "click_function_r"..tostring(i)
-        self.setVar(
-            buttonTable.click_function,
-            function(o,c,a) retrieveCounters(o,c,a,i) end
-        )
-        mat.createButton(buttonTable)
-    end
+    -- activate UI elements
+    gatherOmatOn()
+    scorePadOff()
 end
 
 -- DISABLED BECAUSE COUNTERS_GUID AND COUNTERS_LOC MIGHT NOT BE CORRELATED CORRECTLY
@@ -211,11 +195,24 @@ end
 function gatherOmatOff()
     Global.UI.setAttribute("gatherOmat","active",false)
     Global.UI.setAttribute("minigatherOmat","active",true)
+    Global.UI.setAttribute("scorePadMini","offsetXY","-160 0")
 end
 
 function gatherOmatOn()
     Global.UI.setAttribute("gatherOmat","active",true)
     Global.UI.setAttribute("minigatherOmat","active",false)
+    Global.UI.setAttribute("scorePadMini","offsetXY","-200 0")
+end
+
+function scorePadOff()
+    Global.UI.setAttribute("scorePad","active",false)
+    Global.UI.setAttribute("scorePadMini","active",true)
+end
+
+function scorePadOn()
+    score()
+    Global.UI.setAttribute("scorePad","active",true)
+    Global.UI.setAttribute("scorePadMini","active",false)
 end
 
 function gatherOmatClick(player, value, id)
@@ -306,7 +303,17 @@ function setup()
         })
     end
     log("Round goals selected")
-    -- fill river
+    -- create fill river and round end buttons
+    tray.createButton({
+        click_function = "roundEnd",
+        label          = "Round End",
+        position       = {1.9,0.15,1.5},
+        rotation       = {0,0,0},
+        scale          = {0.2,0.2,0.2},
+        width          = 4000,
+        height         = 1000,
+        font_size      = 1000
+    })
     tray.createButton({
         click_function = "refillRiver",
         label          = "Refill",
@@ -322,14 +329,19 @@ function setup()
     resetBirdfeeder()
     -- select first player 
     local players = Player.getPlayers()
-    local firstPlayeri = math.random(#players)
+    local firstPlayer = players[math.random(#players)]
+    local firstPlayeri = find(firstPlayer.color,COLORS)
     broadcastToAll(
-        COLORS[firstPlayeri].." selected as first player",
+        firstPlayer.steam_name.." selected as first player",
         Color.fromString(COLORS[firstPlayeri])
     )
     local token = getObjectFromGUID(FIRSTPLAYER_GUID)
     token.setPositionSmooth(FIRSTPLAYER_LOC[firstPlayeri])
     token.setRotationSmooth(FIRSTPLATER_ROT[firstPlayeri])
+    -- setup player-based UI elements
+    for _,player in ipairs(players) do
+        Global.UI.setAttribute("Name"..player.color,"text",player.steam_name)
+    end  
     -- end
     log("Setup complete")
 end
@@ -458,6 +470,9 @@ function oceaniaEnable()
             return all(allResting)
         end
     )
+    -- update score pad UI
+    Global.UI.setAttribute("Oceania","active",true)
+    Global.UI.setAttribute("Nectar","active",true)
     -- change global definition
     isOceaniaAdded = true
     log("Oceania expansion setup complete")

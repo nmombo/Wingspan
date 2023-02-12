@@ -1,0 +1,9 @@
+<Defaults>
+    <Text class="scoretext" fontstyle="Bold" color="#000000" alignment="MiddleLeft"/>
+    <Panel class="score" height="40" width="40" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1"/>
+    <Panel class="ScorepadALLPurple" height="30" width="100" color="Purple" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY=" 0"/>
+    <Panel class="ScorepadALLBlue" height="30" width="100" color="Blue" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY="-100 0"/>
+    <Panel class="ScorepadALLGreen" height="30" width="100" color="Green" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY="-200 0"/>
+    <Panel class="ScorepadALLYellow" height="30" width="100" color="Yellow" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY="-300 0"/>
+    <Panel class="ScorepadALLWhite" height="30" width="100" color="White" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY="-400 0"/>
+</Defaults>

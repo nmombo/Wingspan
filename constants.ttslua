@@ -105,12 +105,37 @@ COUNTERS_LOC = {
     COUNTERS_BLUE_LOC,
     COUNTERS_PURPLE_LOC
 }
-COUNTERBUTTONS_LOC = {
-    {-6.85,0.2,0.5},
-    {-6.85,0.2,0.2},
-    { 7.05,0.2,-0.15},
-    {-7.05,0.2,-0.1},
-    {-7.05,0.2,-0.2}
+NECTAR_WHITE_LOC = {
+    {-6.97, 1.11, -15.67},
+    {-6.97, 1.11, -18.92},
+    {-6.95, 1.11, -22.05}
+}
+NECTAR_YELLOW_LOC = {
+    {-16.95, 1.11, 6.11},
+    {-20.20, 1.11, 6.11},
+    {-23.33, 1.11, 6.09}
+}
+NECTAR_GREEN_LOC = {
+    {-8.14, 1.11, 16.50},
+    {-8.14, 1.11, 19.75},
+    {-8.16, 1.11, 22.88}
+}
+NECTAR_BLUE_LOC = {
+    {19.03, 1.11, 16.48},
+    {19.03, 1.11, 19.73},
+    {19.01, 1.11, 22.86}
+}
+NECTAR_PURPLE_LOC = {
+    {16.80, 1.11, -5.79},
+    {20.05, 1.11, -5.79},
+    {23.18, 1.11, -5.77}
+}
+NECTAR_LOC = {
+    NECTAR_WHITE_LOC,
+    NECTAR_YELLOW_LOC,
+    NECTAR_GREEN_LOC,
+    NECTAR_BLUE_LOC,
+    NECTAR_PURPLE_LOC
 }
 GOALZONES_VAL = {
     {4,1,0,0},

@@ -1,7 +1,3 @@
-<Defaults>
-    <Panel class="score" height="40" width="40" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1"/>
-</Defaults>
-
 <!-- Gather-O-Mat -->
 <Panel id="gatherOmat" height="255" width="200" color="#3C3A39" rectAlignment="Lowerright" allowDragging="false" active="false">
     <Button id="GOMButton" onClick="gatherOmatOff" height="15" width="200" color="#128712" textcolor="#ffffff" rectAlignment="Upperright"></Button>

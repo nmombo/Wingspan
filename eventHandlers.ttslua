@@ -1,7 +1,12 @@
 function onObjectLeaveContainer(container,object)
+    -- food
     if isin(container.getGUID(),RESOURCEBAGS_GUID) then
         local tag = RESOURCES[find(container.getGUID(),RESOURCEBAGS_GUID)]
         object.addTag(tag)
+    end
+    -- egg
+    if isin(container.getGUID(),EGGBAGS_GUID) then
+        object.addTag("Egg")
     end
 end
 

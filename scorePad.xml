@@ -1,0 +1,229 @@
+<!-- Scorepad Mini -->
+<Panel id="scorePadMini" height="15" width="100" color="#3C3A39" rectAlignment="Lowerright" allowDragging="false" returnToOriginalPositionWhenReleased="true" offsetXY="-340 0" active="false">
+    <Button onClick="scorePadOn" height="15" width="100" color="#128712" textColor="#000000" rectAlignment="UpperRight">
+        <text color="#FFFFFF" offsetXY="0 0">Scorepad</text>
+    </Button>
+</Panel>
+
+<!-- Scorepad Big -->
+<Panel id="scorePad" height="580" width="720" color="#AAAAAA" rectAlignment="Center" allowDragging="true" returnToOriginalPositionWhenReleased="false" outline="#000000" outlineSize="1 -1" active="false">
+    <!-- Buttons -->
+    <Button onClick="scorePadOff" height="20" width="20" color="#128712" text="X" textColor="#000000" fontStyle="Bold" fontSize="14" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" offsetXY="-5 -5"></Button>
+    <Button onClick="score" height="30" width="200" color="#EEEEEE" text="Update Scores" textColor="#000000" fontSize="14" rectAlignment="UpperCenter" outline="#000000" outlineSize="1 -1" offsetXY="0 -15"></Button>
+    <!-- Main Panel -->
+    <Panel height="540" width="710" rectAlignment="UpperCenter" outline="#000000" outlineSize="1 -1" active="true" offsetXY="-5 -30" id="ScorepadMain">
+        <!-- Player Names -->
+        <Panel offsetXY="0 -30">
+            <Panel id="NamePanel" height="30" width="700" offsetXY="10 0" color="#888888" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1" active="true">
+                <Text class="scoretext">Name</Text>
+            </Panel>
+            <Panel height="30" width="100" color="White" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY = "-400 0" id="ScorepadWhiteName">
+                <Text class="scoretext" id="NameWhite" text="White" alignment="Center"></Text>
+            </Panel>
+            <Panel height="30" width="100" color="Yellow" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY="-300 0" id="ScorepadYellowName">
+                <Text class="scoretext" id="NameYellow" text="Yellow" alignment="Center"></Text>
+            </Panel>
+            <Panel height="30" width="100" color="Green" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY="-200 0" id="ScorepadGreenName">
+                <Text class="scoretext" id="NameGreen" text="Green" alignment="Center"></Text>
+            </Panel>
+            <Panel height="30" width="100" color="Blue" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY="-100 0" id="ScorepadBlueName">
+                <Text class="scoretext" id="NameBlue" text="Blue" alignment="Center"></Text>
+            </Panel>
+            <Panel height="30" width="100" color="Purple" rectAlignment="UpperRight" outline="#000000" outlineSize="1 -1" active="true" offsetXY="0 0" id="ScorepadPurpleName">
+                <Text class="scoretext" id="NamePurple" text="Purple" alignment="Center"></Text>
+            </Panel>
+        </Panel>
+        <!-- Base Game -->
+        <Text class="scoretext" color="#000000" offsetXY="10 190">Base Game</Text>
+        <!-- Amount on Bird Cards-->
+        <Panel offsetXY="0 -90">
+            <Panel id="BasePanel" height="30" width="700" offsetXY="10 0" color="#888888" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1" active="true">
+                <Text class="scoretext">Bird Cards</Text>
+            </Panel>
+            <Panel class="ScorepadALLPurple">
+                <Panel  width="100" color="Purple">
+                    <Text id="ScorepadBirdsPurple" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLBlue">
+                <Panel  width="100"  color="Blue">
+                    <Text id="ScorepadBirdsBlue" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLGreen">
+                <Panel  width="100"  color="Green">
+                    <Text id="ScorepadBirdsGreen" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLYellow">
+                <Panel  width="100"  color="Yellow">
+                    <Text id="ScorepadBirdsYellow" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLWhite">
+                <Panel  width="100" >
+                    <Text id="ScorepadBirdsWhite" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+        </Panel>
+        <!-- Bonus Cards-->
+        <Panel offsetXY="0 -120">
+            <Panel id="BasePanel" height="30" width="700" offsetXY="10 0" color="#888888" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1" active="true">
+                <Text class="scoretext">Bonus Cards</Text>
+            </Panel>
+            <Panel class="ScorepadALLPurple">
+                <Panel  width="100" color="Purple">
+                    <InputField text="0" width="100" placeholder = "score..." characterValidation="Integer" characterLimit="3" id="scorepadBonusPurple" onValueChanged="scoreBonus" color="Purple"></InputField>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLBlue">
+                <Panel  width="100"  color="Blue">
+                    <InputField text="0" width="100" placeholder = "score..." characterValidation="Integer" characterLimit="3" id="scorepadBonusBlue" onValueChanged="scoreBonus" color="Blue"></InputField>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLGreen">
+                <Panel  width="100"  color="Green">
+                    <InputField text="0" width="100" placeholder = "score..." characterValidation="Integer" characterLimit="3" id="scorepadBonusGreen" onValueChanged="scoreBonus" color="Green"></InputField>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLYellow">
+                <Panel  width="100"  color="Yellow">
+                    <InputField text="0" width="100" placeholder = "score..." characterValidation="Integer" characterLimit="3" id="scorepadBonusYellow" onValueChanged="scoreBonus" color="Yellow"></InputField>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLWhite">
+                <Panel  width="100" >
+                    <InputField text="0" width="100" placeholder = "score..." characterValidation="Integer" characterLimit="3" id="scorepadBonusWhite" onValueChanged="scoreBonus" color="White"></InputField>
+                </Panel>
+            </Panel>
+        </Panel>
+        <!-- End of Round Goals -->
+        <Panel offsetXY="0 -150">
+            <Panel id="BasePanel" height="30" width="700" offsetXY="10 0" color="#888888" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1" active="true">
+                <Text class="scoretext">End-of-round Goals</Text>
+            </Panel>
+            <Panel class="ScorepadALLPurple">
+                <Panel  width="100" color="Purple">
+                    <Text id="ScorepadGoalsPurple" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLBlue">
+                <Panel  width="100"  color="Blue">
+                    <Text id="ScorepadGoalsBlue" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLGreen">
+                <Panel  width="100"  color="Green">
+                    <Text id="ScorepadGoalsGreen" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLYellow">
+                <Panel  width="100"  color="Yellow">
+                    <Text id="ScorepadGoalsYellow" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLWhite">
+                <Panel  width="100" >
+                    <Text id="ScorepadGoalsWhite" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+        </Panel>
+        <!-- Tucked Birds, Cached Food, and Eggs -->
+        <Panel offsetXY="0 -180">
+            <Panel id="BasePanel" height="30" width="700" offsetXY="10 0" color="#888888" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1" active="true">
+                <Text class="scoretext">Tucked, Cached, and Eggs</Text>
+            </Panel>
+            <Panel class="ScorepadALLPurple">
+                <Panel  width="100" color="Purple">
+                    <Text id="Scorepad4Purple" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLBlue">
+                <Panel  width="100"  color="Blue">
+                    <Text id="Scorepad4Blue" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLGreen">
+                <Panel  width="100"  color="Green">
+                    <Text id="Scorepad4Green" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLYellow">
+                <Panel  width="100"  color="Yellow">
+                    <Text id="Scorepad4Yellow" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLWhite">
+                <Panel  width="100" >
+                    <Text id="Scorepad4White" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+        </Panel>
+        <!-- Oceania Expansion -->
+        <Text class="scoretext" color="#000000" offsetXY="10 40" active="false" id="Oceania">Oceania Expansion</Text>
+        <!-- Nectar Ranking -->
+        <Panel offsetXY="0 -240" active="false" id="Nectar">
+            <Panel id="BasePanel" height="30" width="700" offsetXY="10 0" color="#888888" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1" active="true">
+                <Text class="scoretext">Nectar Ranking</Text>
+            </Panel>
+            <Panel class="ScorepadALLPurple">
+                <Panel  width="100" color="Purple">
+                    <Text id="ScorepadNectarPurple" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLBlue">
+                <Panel  width="100"  color="Blue">
+                    <Text id="ScorepadNectarBlue" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLGreen">
+                <Panel  width="100"  color="Green">
+                    <Text id="ScorepadNectarGreen" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLYellow">
+                <Panel  width="100"  color="Yellow">
+                    <Text id="ScorepadNectarYellow" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLWhite">
+                <Panel  width="100" >
+                    <Text id="ScorepadNectarWhite" text="0" color="#000000"></Text>
+                </Panel>
+            </Panel>
+        </Panel>
+        <!-- Total -->
+        <Text class="scoretext" color="#000000" offsetXY="10 -20">Total</Text>
+        <!-- Nectar Ranking -->
+        <Panel offsetXY="0 -300">
+            <Panel id="BasePanel" height="30" width="700" offsetXY="10 0" color="#888888" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1" active="true">
+                <Text class="scoretext">Total</Text>
+            </Panel>
+            <Panel class="ScorepadALLPurple">
+                <Panel  width="100" color="Purple">
+                    <Text id="ScorepadTotalPurple" text="0" color="#000000" fontStyle="Bold"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLBlue">
+                <Panel  width="100"  color="Blue">
+                    <Text id="ScorepadTotalBlue" text="0" color="#000000" fontStyle="Bold"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLGreen">
+                <Panel  width="100"  color="Green">
+                    <Text id="ScorepadTotalGreen" text="0" color="#000000" fontStyle="Bold"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLYellow">
+                <Panel  width="100"  color="Yellow">
+                    <Text id="ScorepadTotalYellow" text="0" color="#000000" fontStyle="Bold"></Text>
+                </Panel>
+            </Panel>
+            <Panel class="ScorepadALLWhite">
+                <Panel  width="100" >
+                    <Text id="ScorepadTotalWhite" text="0" color="#000000" fontStyle="Bold"></Text>
+                </Panel>
+            </Panel>
+        </Panel>
+    </Panel>
+</Panel>
