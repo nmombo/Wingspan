@@ -26,10 +26,7 @@ require("cameras")
 -- global vars
 isEuropeAdded = false
 isOceaniaAdded = false
-hasRiverWaited = {
-    ["b3e430"]=true,
-    ["89b212"]=true,
-    ["4c4ee4"]=true
+hasRiverWaited = {["b3e430"]=true,["89b212"]=true,["4c4ee4"]=true
 }
 hasRoundWaited = true
 scores = {{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}}             
@@ -170,28 +167,6 @@ function onLoad()
     -- activate UI elements
     gatherOmatOn()
     scorePadOff()
-end
-
--- DISABLED BECAUSE COUNTERS_GUID AND COUNTERS_LOC MIGHT NOT BE CORRELATED CORRECTLY
-function retrieveCounters(obj,color,altClick,i)
---     for j,counterGUID in ipairs(COUNTERS_GUID[i]) do
---         local counter = getObjectFromGUID(counterGUID)
---         local scored = false
---         for _,row in ipairs(GOALZONES_GUID) do
---             for _,zoneGUID in ipairs(row) do
---                 local zone = getObjectFromGUID(zoneGUID)
---                 log(zone.getObjects())
---                 if isin(counter,zone.getObjects()) then
---                     scored = true
---                     log(scored)
---                 end
---             end
---         end
---         if scored then break end
---         local setPos = COUNTERS_LOC[i][j]
---         counter.setPositionSmooth({setPos[1],2,setPos[3]},false,true)
---         counter.setRotationSmooth({0,0,0},false,true)
---     end
 end
 
 function gatherOmatOff()
