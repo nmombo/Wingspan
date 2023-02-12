@@ -570,17 +570,18 @@ function roundEnd()
         -- rotate first player
         local players = Player.getPlayers()
         local playersi = {}
-        local i = 1
+        local p_i = 1
         for _,player in ipairs(players) do
-            playersi[i] = find(player.color,COLORS)
-            i = i + 1
+            playersi[p_i] = find(player.color,COLORS)
+            p_i = p_i + 1
         end
         playersi = table.sort(playersi)
         for i,loc in ipairs(FIRSTPLAYER_LOC) do
             local obj = findObjAt(loc)
             if obj~=nil then
-                local j = find(i,playersi)+1
-                if j>#playersi then j=1 end
+                local j = find(i,playersi)
+                if j==#playersi then j=playersi[1]
+                else j = playersi[j+1] end
                 obj.setPositionSmooth(FIRSTPLAYER_LOC[j],false,true)
                 obj.setRotationSmooth(FIRSTPLAYER_ROT[j],false,true)
                 break

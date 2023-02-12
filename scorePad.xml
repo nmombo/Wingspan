@@ -69,7 +69,7 @@
         <!-- Bonus Cards-->
         <Panel offsetXY="0 -120">
             <Panel id="BasePanel" height="30" width="700" offsetXY="10 0" color="#888888" rectAlignment="UpperLeft" outline="#000000" outlineSize="1 -1" active="true">
-                <Text class="scoretext">Bonus Cards</Text>
+                <Text class="scoretext">Bonus Cards (enter manually)</Text>
             </Panel>
             <Panel class="ScorepadALLPurple">
                 <Panel  width="100" color="Purple">

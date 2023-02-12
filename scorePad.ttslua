@@ -71,13 +71,11 @@ function score()
                 elseif count>nectarCounts[j][2] and #nectarWinners[j][1]<2 then
                     nectarCounts[j][2] = count
                     nectarWinners[j][2] = {i}
-                elseif count==nectarWinners[j][2] and #nectarWinners[j][1]<2 then
+                elseif count==nectarCounts[j][2] and #nectarWinners[j][1]<2 then
                     nectarWinners[j][2][#nectarWinners[j][2]+1] = i
                 end
             end
         end
-        log("nectarWinners")
-        log(nectarWinners)
         -- give points to winners
         for i,_ in ipairs(scores) do
             for j,_ in ipairs(nectarWinners) do
@@ -90,17 +88,25 @@ function score()
         end
     end
     -- update score pad UI
-    for i,score in ipairs(scores) do
+    local players = Player.getPlayers()
+    local playersi = {}
+    local p_i = 1
+    for _,player in ipairs(players) do
+        playersi[p_i] = find(player.color,COLORS)
+        p_i = p_i + 1
+    end
+    playersi = table.sort(playersi)
+    for _,i in ipairs(playersi) do
         local id = "ScorepadBirds"..COLORS[i]
-        Global.UI.setAttribute(id,"text",tostring(score[1]))
+        Global.UI.setAttribute(id,"text",tostring(scores[i][1]))
         id = "ScorepadGoals"..COLORS[i]
-        Global.UI.setAttribute(id,"text",tostring(score[3]))
+        Global.UI.setAttribute(id,"text",tostring(scores[i][3]))
         id = "Scorepad4"..COLORS[i]
-        Global.UI.setAttribute(id,"text",tostring(score[4]))
+        Global.UI.setAttribute(id,"text",tostring(scores[i][4]))
         id = "ScorepadNectar"..COLORS[i]
-        Global.UI.setAttribute(id,"text",tostring(score[5]))
+        Global.UI.setAttribute(id,"text",tostring(scores[i][5]))
         id = "ScorepadTotal"..COLORS[i]
-        Global.UI.setAttribute(id,"text",tostring(sum(score)))
+        Global.UI.setAttribute(id,"text",tostring(sum(scores[i])))
     end
 end
 
