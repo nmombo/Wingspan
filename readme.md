@@ -51,7 +51,7 @@ Date TBD | Future release
 
 ## Acknowledgements
 
-Unofficial version intended to repalce discontinued DLC. Original game designed by Elizabeth Hargrave and published by Stonemaier Games.
+Unofficial version intended to replace discontinued DLC. Original game designed by Elizabeth Hargrave and published by Stonemaier Games.
 
 Credit to Steam user God Noden for scans and models of base game.
 
