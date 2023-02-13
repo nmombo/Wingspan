@@ -174,3 +174,13 @@ RIVERZONES_GUID = {
     "89b212",
     "4c4ee4"
 }
+-- Combined games
+BIRDCACHE_BASE_GUID = { -- expected 24/25
+    "ad7b8d","2db375","b6017e","420fda","0ee779","eeccb7",
+    "c97361","368939","106eb7","3f7e5d","ab0fd1","9d490c",
+    "8ca2ce","439fc5","4f2c4e","472906","888525","a8f680",
+    "d9c551","1502b1",
+}
+BIRDCACHE_EUROPE_GUID = { -- expected 11
+    
+}

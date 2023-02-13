@@ -16,18 +16,17 @@ Tasks
 ]]
 
 -- import files
-require("guids")
-require("constants")
+require("scripts/guids")
+require("scripts/constants")
 require("../utils")
-require("eventHandlers")
-require("scorePad")
-require("cameras")
+require("scripts/eventHandlers")
+require("scripts/scorePad")
+require("scripts/cameras")
 
 -- global vars
 isEuropeAdded = false
 isOceaniaAdded = false
-hasRiverWaited = {["b3e430"]=true,["89b212"]=true,["4c4ee4"]=true
-}
+hasRiverWaited = {["b3e430"]=true,["89b212"]=true,["4c4ee4"]=true}
 hasRoundWaited = true
 scores = {{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}}             
 
