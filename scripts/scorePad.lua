@@ -35,11 +35,44 @@ function score()
     -- points for end of round goals
     for r,row in ipairs(GOALZONES_GUID) do
         for c,zoneGUID in ipairs(row) do
+            -- find which colors are in the zone
             local zone = getObjectFromGUID(zoneGUID)
-            local isColoriInZone = {false,false,false,false,false}
+            local isColoriInZone = {0,0,0,0,0}
             for _,obj in ipairs(zone.getObjects()) do
                 for i,countersColor in ipairs(COUNTERS_GUID) do
                     if isin(obj.getGUID(),countersColor) then
+                        isColoriInZone[i] = 1
+                    end
+                end
+            end
+            -- split points and round up if multiple
+            if sum(isColoriInZone)>1 and c<=4-sum(isColoriInZone)+1 then
+                for i,_ in ipairs(COLORS) do
+                    if isColoriInZone[i]==1 then 
+                        local avgVals = {}
+                        for i=1,sum(isColoriInZone) do
+                            avgVals[i] = GOALZONES_VAL[r][c+i-1]
+                        end
+                        local avgFlr = math.floor(sum(avgVals)/sum(isColoriInZone))
+                        scores[i][3] = scores[i][3] + avgFlr
+                    end
+                end
+            -- split remaining points and round up if multiple in later column
+            elseif sum(isColoriInZone)>1 then
+                for i,_ in ipairs(COLORS) do
+                    if isColoriInZone[i]==1 then 
+                        local avgVals = {}
+                        for i=c,4 do
+                            avgVals[i] = GOALZONES_VAL[r][i]
+                        end
+                        local avgFlr = math.floor(sum(avgVals)/sum(isColoriInZone))
+                        scores[i][3] = scores[i][3] + avgFlr
+                    end
+                end
+            -- give points if single
+            else
+                for i,_ in ipairs(COLORS) do
+                    if isColoriInZone[i]==1 then
                         scores[i][3] = scores[i][3] + GOALZONES_VAL[r][c]
                     end
                 end
