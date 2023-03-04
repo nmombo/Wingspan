@@ -16,6 +16,13 @@ PLAYERMATZONES_GUID = {
     "46d54d",
     "b6bd56"
 }
+PLAYERMATLEFTZONES_GUID = {
+    "77c324",
+    "01a901",
+    "c91493",
+    "a76980",
+    "db354a"
+}
 RESOURCEMATS_GUID = {
     "88a6f7",
     "f41518",

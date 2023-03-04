@@ -1,15 +1,14 @@
 function onScriptingButtonDown(index, color)
     -- player mat
     if index == 1 then
-        log(color)
         local i = find(color,COLORS)
-        log(i)
         local mat = getObjectFromGUID(PLAYERMATZONES_GUID[i])
-        log(mat)
+        local y = mat.getRotation().y-180
+        if y<0 then y = y+360 end
         Player[color].lookAt({
             position = mat.getPosition(),
             pitch    = 90,
-            yaw      = mat.getRotation().y-180,
+            yaw      = y,
             distance = 15,
         })
     end

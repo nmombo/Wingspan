@@ -575,6 +575,7 @@ function roundEnd()
     if hasRoundWaited then
         hasRoundWaited = false
         log("Round ending")
+        broadcastToAll("Round ending")
         Wait.time(function() hasRoundWaited=true end,2)
         -- reset river
         for _,zoneGUID in ipairs(RIVERZONES_GUID) do
@@ -625,6 +626,21 @@ function roundEnd()
                     local trash = getObjectFromGUID(TRASH_GUID[i])
                     local setPos = trash.getPosition()
                     obj.setPositionSmooth({setPos.x,4,setPos.z},false,true)
+                end
+            end
+        end
+        -- recover counters
+        for i,row in ipairs(COUNTERS_GUID) do
+            for j,guid in ipairs(row) do
+                local counter = getObjectFromGUID(guid)
+                if counter.getZones()[1]~=nil then
+                    local condR = isin(counter.getZones()[1].getGUID(),PLAYERMATZONES_GUID)
+                    local condL = isin(counter.getZones()[1].getGUID(),PLAYERMATLEFTZONES_GUID)
+                    if condR or condL then
+                        local setPos = COUNTERS_LOC[i][j]
+                        counter.setPositionSmooth({setPos[1],2,setPos[3]},false,true)
+                        counter.setRotationSmooth({0,0,0},false,true)
+                    end
                 end
             end
         end
